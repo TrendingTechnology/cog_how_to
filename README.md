@@ -4,7 +4,7 @@ According to [Cogeo.org](https://www.cogeo.org/):
 
 > *A Cloud Opdtimized GeoTIFF (COG) is a regular GeoTIFF file, aimed at being hosted on a HTTP file server, with an internal organization that enables more efficient workflows on the cloud. **It does this by leveraging the ability of clients issuing ​HTTP GET range requests to ask for just the parts of a file they need.***
 
-Think about the following case: You want to analyze the [NDVI](https://de.wikipedia.org/wiki/Normalized_Difference_Vegetation_Index) of your local 1km² park by using Sentinel 2 geoTIFF imaginery. Sentinel 2 satellite images cover very big regions. In the past, you had to download the whole file (100mb +) for band 4 (red) and the whole file for band 8 (near infrared) even that in fact, you need only a small portion of the data. That's why COG's (cloud optimized geoTIFFs) have been invented. With them, we can query the specific bytes in the image we need.
+Think about the following case: You want to analyze the [NDVI](https://de.wikipedia.org/wiki/Normalized_Difference_Vegetation_Index) of your local 1km² park by using Sentinel 2 geoTIFF imaginery. Sentinel 2 satellite images cover very big regions. In the past, you had to download the whole file (100mb +) for band 4 (red) and the whole file for band 8 (near infrared) even that in fact, you need only a small portion of the data. That's why COG's (cloud optimized geoTIFFs) have been invented. With them, we can query the specific bytes in the image.
 
 Cloud optimized geoTIFFs offer:
 - efficient imaginery data access
@@ -126,7 +126,7 @@ Now we are ready for the desired range request.
         subset = geo_fp.read(1, window=window)
 ```
 
-The `subset` object contains your desired data. We can access and vizualize it with:
+The `subset` object contains the desired data. We can access and vizualize it with:
 
 ```python
         import matplotlib.pyplot as plt
@@ -136,7 +136,7 @@ The `subset` object contains your desired data. We can access and vizualize it w
 ![red](red.png)
 ![nir](nir.png)
 
-Now you can access the images in seconds compared to minutes in the past. I hope I was able to show you how to use COGs in Rasterio and why they are great. Have a great day!
+I hope, I was able to show you how COG's work and that you are ready now to access your cloud optimized geoTIFF images in seconds compared to minutes in the past. Have a great day!
 
 All together:
 
