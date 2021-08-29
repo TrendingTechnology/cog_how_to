@@ -4,14 +4,14 @@ According to [Cogeo.org](https://www.cogeo.org/):
 
 > *A Cloud Opdtimized GeoTIFF (COG) is a regular GeoTIFF file, aimed at being hosted on a HTTP file server, with an internal organization that enables more efficient workflows on the cloud. **It does this by leveraging the ability of clients issuing ​HTTP GET range requests to ask for just the parts of a file they need.***
 
-Think about the following case: You want to analyze the [NDVI](https://de.wikipedia.org/wiki/Normalized_Difference_Vegetation_Index) of your local 1km² park by using Sentinel 2 geoTIFF imaginery. Sentinel 2 satellite images cover very big regions. In the past, you had to download the whole file (100mb +) for band 4 (red) and the whole file for band 8 (near infrared) even that in fact, you need only a small portion of the data. That's why COG's (cloud optimized geoTIFFs) have been invented. 
+Think about the following case: You want to analyze the [NDVI](https://de.wikipedia.org/wiki/Normalized_Difference_Vegetation_Index) of your local 1km² park by using Sentinel 2 geoTIFF imaginery. Sentinel 2 satellite images cover very big regions. In the past, you had to download the whole file (100mb +) for band 4 (red) and the whole file for band 8 (near infrared) even that in fact, you need only a small portion of the data. That's why COG's (cloud optimized geoTIFFs) have been invented. With them, we can query the specific bytes in the image we need.
 
 Cloud optimized geoTIFFs offer:
 - efficient imaginery data access
 - reduced duplication of data
 - legacy compatibility
 
-COG's can be read just like normal geoTIFFs. In our example, we will use an AOI (area of interest), that is described in a [geoJSON](https://geojson.io/). We will also use [sat-search](https://github.com/sat-utils/sat-search) to query the latest available satellite imaginery for our specific location. Then we will use [Rasterio](https://rasterio.readthedocs.io/) to perform a range request to download only the parts of the files we need. We will also use [Pyproj](https://pyproj4.github.io/pyproj/stable/) to perform neccessary coordinate transformations. The cloud optimized Sentinel 2 imaginery is hosted in a [AWS S3 repository](https://registry.opendata.aws/sentinel-2-l2a-cogs/).
+COG's can be read just like normal geoTIFFs. In our example, we will use an AOI (area of interest), that is described in a [geoJSON](https://geojson.io/). We will also use [sat-search](https://github.com/sat-utils/sat-search) to query the latest available Sentinel-2 satellite imaginery for our specific location. Then we will use [Rasterio](https://rasterio.readthedocs.io/) to perform a range request to download only the parts of the files we need. We will also use [Pyproj](https://pyproj4.github.io/pyproj/stable/) to perform neccessary coordinate transformations. The cloud optimized Sentinel 2 imaginery is hosted in a [AWS S3 repository](https://registry.opendata.aws/sentinel-2-l2a-cogs/).
 
 ### Install libraries (matplotlib optional)
 ```bash
@@ -51,10 +51,10 @@ date_60_days_ago = date_60_days_ago.strftime("%Y-%m-%d")
 
 # only request images with cloudcover less than 20%
 query = {
-        "eo:cloud_cover": {
-            "lt": 20
-            }
+    "eo:cloud_cover": {
+        "lt": 20
         }
+    }
 search = Search(
     url='https://earth-search.aws.element84.com/v0',
     intersects=geometry,
@@ -72,7 +72,7 @@ print(f"Url red band: {red}")
 print(f"Url nir band: {nir}")
 ```
 
-Now we got the URLs of the most recent Sentinel 2 imaginery for our region. In the next step, we need to calculate which pixels to query from our geoTIFF server. The satellite image come with 10980 x 10980 pixels. Every pixel represents 10 meter ground resolution. Therefore, we need to calculate which pixels fall into our area of interest. With the recent Rasterio versions, we can read COGs by passing a rasterio.windows.Window to the read function. First, we open a [virtual file](https://rasterio.readthedocs.io/en/latest/topics/vsi.html)(urls of a hosted file):
+Now we got the URLs of the most recent Sentinel 2 imaginery for our region. In the next step, we need to calculate which pixels to query from our geoTIFF server. The satellite image comes with 10980 x 10980 pixels. Every pixel represents 10 meter ground resolution. In order to calculate which pixels fall into our area of interest, we need to reproject our geoJSON coordinates into pixel row/col. With the recent Rasterio versions, we can read COGs by passing a rasterio.windows.Window (that specifies which row/col to query) to the read function. Before we can query, we need to open a [virtual file](https://rasterio.readthedocs.io/en/latest/topics/vsi.html)(urls of a hosted file):
 
 ```python
 for geotiff_file in [red, nir]:
@@ -136,7 +136,7 @@ The `subset` object contains your desired data. We can access and vizualize it w
 ![red](red.png)
 ![nir](nir.png)
 
-Now you can access the images in seconds compared to minutes in the past. I hope I was able to show you how to use COGs in Rasterio. Have a great day!
+Now you can access the images in seconds compared to minutes in the past. I hope I was able to show you how to use COGs in Rasterio and why they are great. Have a great day!
 
 All together:
 
@@ -162,10 +162,10 @@ date_60_days_ago = date_60_days_ago.strftime("%Y-%m-%d")
 
 # only request images with cloudcover less than 20%
 query = {
-        "eo:cloud_cover": {
-            "lt": 20
-            }
+    "eo:cloud_cover": {
+        "lt": 20
         }
+    }
 search = Search(
     url='https://earth-search.aws.element84.com/v0',
     intersects=geometry,

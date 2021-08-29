@@ -19,10 +19,10 @@ date_60_days_ago = date_60_days_ago.strftime("%Y-%m-%d")
 
 # only request images with cloudcover less than 20%
 query = {
-        "eo:cloud_cover": {
-            "lt": 20
-            }
+    "eo:cloud_cover": {
+        "lt": 20
         }
+    }
 search = Search(
     url='https://earth-search.aws.element84.com/v0',
     intersects=geometry,
