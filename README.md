@@ -4,14 +4,14 @@ According to [Cogeo.org](https://www.cogeo.org/):
 
 > *A Cloud Opdtimized GeoTIFF (COG) is a regular GeoTIFF file, aimed at being hosted on a HTTP file server, with an internal organization that enables more efficient workflows on the cloud. **It does this by leveraging the ability of clients issuing ​HTTP GET range requests to ask for just the parts of a file they need.***
 
-Think about the following case: You want to analyze the [NDVI](https://de.wikipedia.org/wiki/Normalized_Difference_Vegetation_Index) of your local 1km² park by using Sentinel 2 geoTIFF imaginery. Sentinel 2 satellite images cover very big regions. In the past, you had to download the whole file (100mb +) for band 4 (red) and the whole file for band 8 (near infrared), but in fact you need only a small portion of the data to calculate the NDVI for your local park. That's why COG's (cloud optimized geoTIFFs) have been invented. 
+Think about the following case: You want to analyze the [NDVI](https://de.wikipedia.org/wiki/Normalized_Difference_Vegetation_Index) of your local 1km² park by using Sentinel 2 geoTIFF imaginery. Sentinel 2 satellite images cover very big regions. In the past, you had to download the whole file (100mb +) for band 4 (red) and the whole file for band 8 (near infrared) even that in fact, you need only a small portion of the data. That's why COG's (cloud optimized geoTIFFs) have been invented. 
 
 Cloud optimized geoTIFFs offer:
 - efficient imaginery data access
 - reduced duplication of data
 - legacy compatibility
 
-COG's can be read just like normal geoTIFFs. In our example, we will use a AOI (area of interest), that is described in a [geoJSON](https://geojson.io/). We will also use [sat-search](https://github.com/sat-utils/sat-search) to query the latest available satellite imaginery for our specific location. Then we will use [Rasterio](https://rasterio.readthedocs.io/) to perform a range request to download only the parts of the files we need. We will also use [Pyproj](https://pyproj4.github.io/pyproj/stable/) to perform neccessary coordinate transformations. The cloud optimized Sentinel 2 imaginery is hosted in a [AWS S3 repository](https://registry.opendata.aws/sentinel-2-l2a-cogs/).
+COG's can be read just like normal geoTIFFs. In our example, we will use an AOI (area of interest), that is described in a [geoJSON](https://geojson.io/). We will also use [sat-search](https://github.com/sat-utils/sat-search) to query the latest available satellite imaginery for our specific location. Then we will use [Rasterio](https://rasterio.readthedocs.io/) to perform a range request to download only the parts of the files we need. We will also use [Pyproj](https://pyproj4.github.io/pyproj/stable/) to perform neccessary coordinate transformations. The cloud optimized Sentinel 2 imaginery is hosted in a [AWS S3 repository](https://registry.opendata.aws/sentinel-2-l2a-cogs/).
 
 ### Install libraries (matplotlib optional)
 ```bash
